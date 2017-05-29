@@ -41,9 +41,9 @@
                 <li>Apside TOP</li>
                 <li>Polytech Tours</li>
                 <li><i class="fa fa-twitter"
-                       aria-hidden="true"></i>&nbsp;@CForycki
+                       aria-hidden="true"></i>&nbsp;<a href="https://twitter.com/cforycki">@CForycki</a>
                 </li>
-                <li><i class="fa fa-github"></i>&nbsp;@cforycki</li>
+                <li><i class="fa fa-github"></i>&nbsp;<a href="https://github.com/cforycki">@cforycki</a></li>
             </ul>
         </section>
 
@@ -51,7 +51,8 @@
             <section>
                 <h2>TypeORM en bref(1/2)</h2>
                 <ul>
-                    <li>Umed Khudoiberdiev (<i class="fa fa-github"></i>&nbsp;@pleerock)</li>
+                    <li>Umed Khudoiberdiev (<i class="fa fa-github"></i>&nbsp;<a href="https://github.com/pleerock">@pleerock</a>)
+                    </li>
                     <li>21 Février 2016</li>
                     <li>v0.0.10 (v0.1.0-alpha3 en cours)</li>
                     <li>Node.JS (v4+)</li>
@@ -264,9 +265,63 @@ public class MyEntity {
                 <h2>QueryBuilder</h2>
                 <p>Permet de créer des requêtes complexes</p>
                 <ul>
-                    <li></li>
+                    <li>select / update / delete</li>
+                    <li>from</li>
+                    <li>innerJoin / leftJoin / ...</li>
+                    <li>where / andWhere / orWhere</li>
+                    <li>having / andHaving / orHaving</li>
+                    <li>groupBy</li>
+                    <li>setParameter</li>
+                    <li>getSql</li>
+                    <li>execute / getOne / getMany</li>
                 </ul>
             </section>
+
+            <section>
+                <h2>Exemples</h2>
+                <pre><code data-trim
+                           class="hljs">
+let entities = await connection.entityManager
+                               .find(MyEntity, {
+                                    alias: 'entity',
+                                    where: 'entity.label LIKE %ToursJS%'
+                               });
+
+let entities = await connection.getRepository(MyEntity)
+                               .find({
+                                    alias: 'entity',
+                                    where: 'entity.label LIKE %ToursJS%'
+                               });
+
+let entities = await connection.getRepository(MyEntity)
+                               .createQueryBuilder('entity')
+                               .where('entity.label LIKE :filter')
+                               .setParameter('filter', '%ToursJS%')
+                               .getMany();
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <h2>Demo !</h2>
+        </section>
+
+        <section>
+            <h2>Conclusion</h2>
+            <ul>
+                <li>Mise en place rapide et utilisation facile</li>
+                <li>Apprentissage facilité si l'on connait déjà un ORM</li>
+                <li>Breaking changes à venir</li>
+                <li>Documentation imparfaite</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Sources</h2>
+            <ul>
+                <li><a href="https://typeorm.github.io"></a>https://typeorm.github.io</li>
+                <li><a href="https://github.com/typeorm/typeorm">https://github.com/typeorm/typeorm</a></li>
+            </ul>
         </section>
     </div>
 </div>
