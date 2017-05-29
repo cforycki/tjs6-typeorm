@@ -1,0 +1,297 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>TypeORM - Tours.JS #6</title>
+
+    <link rel="stylesheet"
+          href="css/reveal.css">
+    <link rel="stylesheet"
+          href="css/theme/black.css">
+    <link rel="stylesheet"
+          href="css/font-awesome.min.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet"
+          href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link  = document.createElement('link');
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h1>TypeORM</h1>
+            <h3>Tours.JS #6</h3>
+        </section>
+
+        <section>
+            <h2>Christophe FORYCKI</h2>
+            <ul>
+                <li>Apside TOP</li>
+                <li>Polytech Tours</li>
+                <li><i class="fa fa-twitter"
+                       aria-hidden="true"></i>&nbsp;@CForycki
+                </li>
+                <li><i class="fa fa-github"></i>&nbsp;@cforycki</li>
+            </ul>
+        </section>
+
+        <section>
+            <section>
+                <h2>TypeORM en bref(1/2)</h2>
+                <ul>
+                    <li>Umed Khudoiberdiev (<i class="fa fa-github"></i>&nbsp;@pleerock)</li>
+                    <li>21 Février 2016</li>
+                    <li>v0.0.10 (v0.1.0-alpha3 en cours)</li>
+                    <li>Node.JS (v4+)</li>
+                    <li>TypeScript (2.1+) et JavaScript (ES5+)</li>
+                    <li>Hibernate, Doctrine</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>TypeORM en bref(2/2)</h2>
+                <p>Base de données supportées:</p>
+                <ul>
+                    <li>MySQL / MariaDB</li>
+                    <li>PostgreSQL</li>
+                    <li>SQLite</li>
+                    <li>Microsoft SQL Server</li>
+                    <li>Oracle (expérimental)</li>
+                    <li>MongoDB (v0.1.0)</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>C'est parti !</h2>
+        </section>
+
+        <section>
+            <section>
+                <h2>Se connecter</h2>
+                <p>Utiliser la méthode
+                <pre><code class="hljs"
+                           data-trim>createConnection(options?: ConnectionOptions) : Promise&lt;Connection&gt;</code></pre>
+                </p>
+                <p>Plusieurs configurations possibles:</p>
+                <ul>
+                    <li>ConnectionOptions</li>
+                    <li>ormconfig.json</li>
+                    <li>Variables d'environnement</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>ConnectionOptions</h2>
+
+                <pre><code class="hljs"
+                           data-trim>
+export interface ConnectionOptions {
+    readonly driver: {
+        readonly type: "mysql"|"postgres"|"mariadb"|
+                       "sqlite"|"oracle"|"mssql"|"websql";
+        readonly url?: string;
+        readonly host?: string;
+        readonly port?: number;
+        readonly username?: string;
+        readonly password?: string;
+        readonly database?: string;
+        readonly extra?: any;
+        readonly tablesPrefix?: string;
+        [...]
+    };
+    readonly name?: string;
+    readonly entities?: Function[]|string[];
+    readonly subscribers?: Function[]|string[];
+    readonly dropSchemaOnConnection?: boolean;
+    readonly autoSchemaSync?: boolean;
+    readonly environment?: string;
+    [...]
+}
+                    </code></pre>
+            </section>
+
+            <section>
+                <h2>ormconfig.json</h2>
+                <p>Tableau de ConnectionOptions au format JSON</p>
+                <p>Exemple:</p>
+                <pre><code class="hljs"
+                           data-trim>
+[
+  {
+    "name": "default",
+    "driver": {
+      "type": "postgres",
+      "host": "localhost",
+      "port": 4000,
+      "username": "todolist",
+      "password": "todolist",
+      "database": "todolist"
+    },
+    "entities": [
+      "dist/entities/*.js"
+    ],
+    "migrations": [
+      "dist/migrations/**/*.js"
+    ],
+    "autoSchemaSync": true
+  }
+]
+                </code></pre>
+            </section>
+
+            <section>
+                <h2>Variables d'environnement</h2>
+                <ul>
+                    <li>TYPEORM_DRIVER_TYPE</li>
+                    <li>TYPEORM_URL</li>
+                    <li>TYPEORM_HOST</li>
+                    <li>TYPEORM_PORT</li>
+                    <li>TYPEORM_USERNAME</li>
+                    <li>TYPEORM_PASSWORD</li>
+                    <li>...</li>
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h2>Décorateurs</h2>
+            </section>
+
+            <section>
+                <h2>Tables</h2>
+                <ul>
+                    <li>@Entity</li>
+                    <li>@AbstractEntity</li>
+                    <li>@EmbeddableEntity</li>
+                    <li>...</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Colonnes</h2>
+                <ul>
+                    <li>@Column</li>
+                    <li>@PrimaryColumn</li>
+                    <li>@PrimaryGeneratedColumn</li>
+                    <li>@CreateDateColumn</li>
+                    <li>@UpdateDateColumn</li>
+                    <li>@VersionDateColumn</li>
+                    <li>@JoinColumn</li>
+                    <li>...</li>
+                </ul>
+                <p>Possibilité de passer des options (nullité, unicité, valeur par défaut, ...)</p>
+            </section>
+
+            <section>
+                <h2>Relations</h2>
+                <ul>
+                    <li>@OneToOne (1:1)</li>
+                    <li>@ManyToOne (n:1)</li>
+                    <li>@OneToMany (1:n)</li>
+                    <li>@ManyToMany (n:n)</li>
+                </ul>
+                <p>Possibilité de passer des options (Insertion / Suppression / Modification en cascade)</p>
+            </section>
+
+            <section>
+                <h2>Exemple</h2>
+                <pre><code class="hljs"
+                           data-trim>
+@Entity("my-custom-entity", {'label': 'DESC'})
+public class MyEntity {
+    @PrimaryGeneratedColumn()
+    id: number;
+    @Column()
+    label: string;
+    @OneToMany(
+        type => AnotherEntity,
+        childObject => childObject.parent,
+        { cascadeInsert: true, cascadeUpdate: true }
+    )
+    childs: Array&lt;AnotherEntity&gt;;
+    /* ... */
+}
+                </code></pre>
+            </section>
+        </section>
+
+        <section>
+            <section><h2>Requêtes</h2></section>
+
+            <section>
+                <h2>EntityManager</h2>
+                <p>Accessible depuis une connection (connection.entityManager)</p>
+                <ul>
+                    <li>hasId(entity)</li>
+                    <li>create(object)</li>
+                    <li>persist(entity)</li>
+                    <li>remove(entity)</li>
+                    <li>find(Entity)</li>
+                    <li>findAndCount(Entity)</li>
+                    <li>...</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Repository</h2>
+                <p>Semblable à l'entityManager, mais pour un type d'entité défini</p>
+                <ul>
+                    <li>hasId(entity)</li>
+                    <li>create(object?)</li>
+                    <li>persist(entity)</li>
+                    <li>remove(entity)</li>
+                    <li>find()</li>
+                    <li>findAndCount()</li>
+                    <li>...</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>QueryBuilder</h2>
+                <p>Permet de créer des requêtes complexes</p>
+                <ul>
+                    <li></li>
+                </ul>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+                          width:        '90%',
+                          dependencies: [
+                              {src: 'plugin/markdown/marked.js'},
+                              {src: 'plugin/markdown/markdown.js'},
+                              {src: 'plugin/notes/notes.js', async: true},
+                              {
+                                  src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                                  hljs.initHighlightingOnLoad();
+                              }
+                              }
+                          ]
+                      });
+    Reveal.configure({slideNumber: 'c/t'});
+</script>
+</body>
+</html>
